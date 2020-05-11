@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Chatアプリ</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- コンテンツ表示画面 -->
+<div>
+    <div>👤<input type="text" id="username" ></div>
+    <div>
+        <textarea id="text" rows="5"></textarea>
+        <button class="send-button" id="send"><img src="write.png" alt="button" width="30" height="30"></button>
+    </div>
+    <!-- リスト表示-->
+    <div id="output"></div>
+</div>
+
+
+<!--/ コンテンツ表示画面 -->
+
+
+
+<!-- 以下JavaScript領域 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.5.2/firebase.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyAINLA65hXisCdvbjdKg0Pf2kvy9Pu9G3E",
+    authDomain: "gscamp191208.firebaseapp.com",
+    databaseURL: "https://gscamp191208.firebaseio.com",
+    projectId: "gscamp191208",
+    storageBucket: "gscamp191208.appspot.com",
+    messagingSenderId: "455094499731",
+    appId: "1:455094499731:web:667c8c8682a541caea9066"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+
+//以下、チャット処理領域（ワーク）
+
+  //送受信の設定準備
+  const newPostRef = firebase.database().ref();
+
+  //MSG送信処理
+    $("#send").on("click",function(){
+
+        // console.log("OK")
+
+        newPostRef.push({
+            username: $("#username").val(),
+            text: $("#text").val()
+
+        });
+
+        //テキスト欄だけを空白にする
+        $("#text").val("")
+    });
+
+  //MSG受信処理
+    newPostRef.on("child_added",function(data){
+        
+        let v = data.val();
+        let k = data.key;
+        
+        //HTMLに受信したMSGを表示
+        let str = `<p>${v.username}</p><br><p>${v.text}</p>`
+
+        $("#output").prepend(str);
+
+        console.log(v.username);
+
+    });
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
