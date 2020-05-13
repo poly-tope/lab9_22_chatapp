@@ -1,0 +1,49 @@
+<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+<script>
+// Initialize Firebase firebaseとの接続準備
+var config = {
+apiKey: "XXXXXXXXXXXXXXXXXXXXXXXXXXX",
+authDomain: "chatapp-e44b3.firebaseapp.com",
+databaseURL: "https://chatapp-e44b3.firebaseio.com",
+projectId: "chatapp-e44b3",
+storageBucket: "",
+messagingSenderId: "478051117358"
+};
+firebase.initializeApp(config);
+
+//MSG送受信準備
+const newPostRef = firebase.database().ref();
+
+//MSG送信
+$("#send").on("click",function(){
+    newPostRef.push({
+        username:$("#username").val(),
+        text:$("#text").val()
+    });
+    $("#text").val("");
+});
+
+//MSG送信エンターキー
+$(window).keypress(function(e){
+    if(e.keyCode === 13) {
+		newPostRef.push({
+        username:$("#username").val(),
+        text:$("#text").val()
+    });
+    $("#text").val("");
+	}
+});
+
+//MSG受信
+//child_added:毎回1個//value:毎回全てのデータを取得
+newPostRef.on("child_added",function(data){
+    const v = data.val();//データ取得
+    const k = data.key;//ユニークkey取得
+//TimeLineメッセージ作成
+    const str = `
+<dl id="${k}">
+<dt>${v.username}</dt>
+<dd>${v.text}</dd>
+</dl>`
+$("#output").prepend(str);
+});

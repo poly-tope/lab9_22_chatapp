@@ -1,0 +1,65 @@
+body {
+  background-color: rgb(53, 53, 53);
+}
+
+/* id編集エリア */
+#send {
+  width: 40px;
+}
+
+#view_time {
+  color: rgb(145, 145, 145);
+  font-size: 10px;
+}
+
+/* class編集エリア */
+.wrapper {
+  display: flex;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.line__container {
+  position: absolute;
+  left: 20%;
+  max-width: 700px;
+  padding: 20px 10px 200px 20px;
+  background-color: rgb(104, 104, 104);
+}
+
+.phase-button {
+  width: 20px;
+  padding-right: 3px;
+}
+
+.input_screen {
+  position: absolute;
+  top: 10px;
+  left: 70%;
+  padding: 10px;
+  height: 80px;
+  position: fixed;
+}
+
+.username_screen {
+  margin-bottom: 5px;
+}
+
+.chatset {
+  display: flex;
+}
+
+.chatset_text {
+  background-color: rgb(203, 203, 203);
+  border-radius: 0px 50px 50px 50px;
+  max-width: 300px;
+  font-size: 13px;
+  padding: 10px;
+  margin: 5px 0px 10px 0px;
+}
+
+.chatset_time {
+  font-size: 5px;
+  color: rgb(181, 181, 181);
+  padding: 15px 0px 0px 4px;
+}

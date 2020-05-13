@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>Chatアプリ</title>
+    <!-- リセットcss読み込み -->
+    <link rel="stylesheet" href="css/reset.css" />
+    <!-- style.css読み込み -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <!-- コンテンツ表示画面 -->
+      <div id="line__container" class="line__container">
+        <main class="main">
+          <div>
+            <!-- リスト表示-->
+            <div id="output"></div>
+          </div>
+        </main>
+      </div>
+      <!--/ コンテンツ表示画面 -->
+
+      <!-- 入力画面 -->
+      <div class="input_screen">
+        <!-- タイトル -->
+        <div class="">
+          <div class="username_screen">
+            <p>
+              <input type="radio" id="username" name="phase" value="🗯" />
+              <img
+                class="phase-button"
+                src="https://s3-ap-northeast-1.amazonaws.com/emoji-img/v6_72/1f5ef.png"
+              />
+
+              <input type="radio" id="username" name="phase" value="❔" />
+              <img
+                class="phase-button"
+                src="https://s3-ap-northeast-1.amazonaws.com/emoji-img/v6_72/2754.png"
+              />
+
+              <input type="radio" id="username" name="phase" value="🖤" />
+              <img
+                class="phase-button"
+                src="https://s3-ap-northeast-1.amazonaws.com/emoji-img/v6_72/1f5a4.png"
+              />
+
+              <input type="radio" id="username" name="phase" value="🤍" />
+              <img
+                class="phase-button"
+                src="https://s3-ap-northeast-1.amazonaws.com/emoji-img/v6_72/1f90d.png"
+              />
+            </p>
+          </div>
+
+          <textarea id="text" rows="3" cols="40"></textarea>
+          <input
+            type="image"
+            id="send"
+            class="send-button"
+            src="https://s3-ap-northeast-1.amazonaws.com/emoji-img/v6_72/1f4ac.png"
+          />
+        </div>
+
+        <p id="view_time"></p>
+      </div>
+      <!--/ 入力画面 -->
+    </div>
+
+    <!-- 以下JavaScript領域 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- スクロール画面最下部から開始 -->
+    <!-- <script>
+      let element = document.getElementById("line__container");
+      element.scrollIntoView(true);
+    </script> -->
+
+    <!-- テキストボックス下の時計 -->
+    <script>
+      function set2fig(num) {
+        // 桁数が1桁だったら先頭に0を加えて2桁に調整する
+        var ret;
+        if (num < 10) {
+          ret = "0" + num;
+        } else {
+          ret = num;
+        }
+        return ret;
+      }
+      function showClock2() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var mon = set2fig(now.getMonth() + 1); //１を足すこと
+        var day = set2fig(now.getDate());
+        var nowTime = new Date();
+        var nowHour = set2fig(nowTime.getHours());
+        var nowMin = set2fig(nowTime.getMinutes());
+        var nowSec = set2fig(nowTime.getSeconds());
+        var msg =
+          year +
+          "/" +
+          mon +
+          "/" +
+          day +
+          " " +
+          nowHour +
+          ":" +
+          nowMin +
+          ":" +
+          nowSec;
+        document.getElementById("view_time").innerHTML = msg;
+      }
+      setInterval("showClock2()", 1000);
+    </script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyAINLA65hXisCdvbjdKg0Pf2kvy9Pu9G3E",
+        authDomain: "gscamp191208.firebaseapp.com",
+        databaseURL: "https://gscamp191208.firebaseio.com",
+        projectId: "gscamp191208",
+        storageBucket: "gscamp191208.appspot.com",
+        messagingSenderId: "455094499731",
+        appId: "1:455094499731:web:667c8c8682a541caea9066",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      //以下、チャット処理領域（ワーク）
+
+      //送受信の設定準備
+      const newPostRef = firebase.database().ref();
+
+      //MSG送信処理
+      $("#send").on("click", function () {
+        // console.log("OK")
+
+        newPostRef.push({
+          username: $('input[name="phase"]:checked').val(),
+          text: $("#text").val(),
+        });
+
+        //テキストを空白にする
+        $("#text").val("");
+      });
+
+      //MSG受信処理
+      newPostRef.on("child_added", function (data) {
+        let v = data.val();
+        let k = data.key;
+
+        //HTMLに受信したMSGを表示
+        let str = `<div class="chatset"><p>${v.username}</p><div class="chatset_text"><p>${v.text}</p></div><div class="chatset_time"><p>送信年月日<br>時間分秒</p></div></div>`;
+        $("#output").append(str);
+        console.log(v.username);
+
+        let element = document.getElementById("line__container");
+        element.scrollIntoView(false);
+      });
+    </script>
+  </body>
+</html>
